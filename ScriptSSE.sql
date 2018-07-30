@@ -73,7 +73,8 @@ create table solicitud(
     idEstudiante int not null,
     idCoordinador int not null,
     idInstitucion int not null,
-    fecha date
+    fecha date,
+    comentarios text
 );
 
 create table estudiante(

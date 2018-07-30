@@ -1,0 +1,3 @@
+# scriptSSE
+
+kionda ke pex

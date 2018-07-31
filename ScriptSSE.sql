@@ -43,15 +43,34 @@ create table hojaServicioSocial(
     idEstudiante int,
     idInstitucion int,
     idCoordinador int,
-    idHorario int,
-    idActividades int,
     fechaInicio date,
     fechaFinalizacion date
 );
 
 create table horarioServicio(
 	id int auto_increment primary key unique,
-    idDetalleHorarioServicio
+    idHojaServicioSocial int
+);
+
+create table detalleHorarioServicio(
+    id int auto_increment primary key unique,
+    nHoras int,
+    diaSemana varchar(20),
+    idHorarioServicio int
+);
+
+create table activadesServicio(
+    id int auto_increment primary key unique,
+    idHojaServicioSocial int
+);
+
+create table detalleActividadesServicio(
+    id int auto_increment primary key unique,
+    actividad text,
+    objetivos text,
+    metas text,
+    duracion text,
+    idActividadesServicio int
 );
 
 create table institucion(
@@ -74,7 +93,13 @@ create table solicitud(
     idCoordinador int not null,
     idInstitucion int not null,
     fecha date,
-    comentarios text
+    comentarios text,
+    estado int
+);
+
+create table estadoSolicitud(
+    id int auto_increment primary key unique,
+    descEstado varchar(15)
 );
 
 create table estudiante(
@@ -108,4 +133,4 @@ create table detalleHorarioAtencion(
     idHorarioAtencion int
 );
 
-##### RELACIONES ######
+##### LLAVES FORANEAS ######

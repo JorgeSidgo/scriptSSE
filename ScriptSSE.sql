@@ -1,7 +1,22 @@
+-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##### SCRIPT BASE DE DATOS SISTEMA DE CONTROL DE SERVICIO SOCIAL ESTUDIANTIL  ITCA-FEPADE #####
+-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/**
+ * SIS12-B
+ * Grupo N° 2 
+ * Integrantes:
+ *      - Francisco Montoya
+ *      - Benjamín Ramírez
+ *      - Abdiel Martínez
+ *      - Jorge Sidgo
+ * Fecha: 30/07/2018
+ */
 drop database if exists sse;
 create database if not exists sse;
 
+-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### TABLAS #####
+-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 create table escuela(
 	id int auto_increment primary key unique,
@@ -133,4 +148,28 @@ create table detalleHorarioAtencion(
     idHorarioAtencion int
 );
 
+-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### LLAVES FORANEAS ######
+-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+alter table grupo add constraint fk_grupo_carrera foreign key (idCarrera) references carrera(id);
+alter table carrera add constraint fk_carrera_escuela foreign key (idEscuela) references escuela(id);
+alter table estudiante add constraint fk_estudiante_usuario foreign key (idUsuario) references usuario(id);
+alter table estudiante add constraint fk_estudiante_grupo foreign key (idGrupo) references grupo(id);
+alter table coordinador add constraint fk_estudiante_usuario foreign key (idUsuario) references usuario(id);
+alter table horarioAtencion add constraint fk_horarioAtencion_coordinador foreign key (idCoordinador) references coordinador(id);
+alter table detalleHorarioAtencion add constraint fk_detalleHorarioAtencion_horarioAtencion foreign key (idHorarioAtencion) references horarioAtencion(id);
+alter table institucion add constraint fk_institucion_tipoInstitucion foreign key (idTipoInstitucion) references tipoInstitucion(id);
+alter table solicitud add constraint fk_solicitud_estudiante foreign key (idEstudiante) references estudiante(id);
+alter table solicitud add constraint fk_solicitud_coordinador foreign key (idCoordinador) references coordinador(id);
+alter table solicitud add constraint fk_solicitud_institucion foreign key (idInstitucion) references institucion(id);
+alter table solicitud add constraint fk_solicitud_estadoSolicitud foreign key (estado) references estadoSolicitud(id);
+alter table materiasEstudiante add constraint fk_materiasEstudiante_materia foreign key (idMateria) references materia(id);
+alter table materiasEstudiante add constraint fk_materiasEstudiante_estudiante foreign key (idEstudiante) references estudiante(id);
+alter table hojaServicioSocial add constraint fk_hojaServicioSocial_estudiante foreign key (idEstudiante) references estudiante(id);
+alter table hojaServicioSocial add constraint fk_hojaServicioSocial_institucion foreign key (idInstitucion) references institucion(id);
+alter table hojaServicioSocial add constraint fk_hojaServicioSocial_coordinador foreign key (idCoordinador) references coordinador(id);
+alter table horarioServicio add constraint fk_horarioServicio_hojaServicioSocial foreign key (idHojaServicioSocial) references hojaServicioSocial(id);
+alter table actividadesServicio add constraint fk_actividadesServicio_hojaServicioSocial foreign key (idHojaServicioSocial) references hojaServicioSocial(id);
+alter table detalleHorarioServicio add constraint fk_detalleHorarioServicio_horarioServicio foreign key (idHorarioServicio) references horarioServicio (id);
+alter table detalleActividadesServicio add constraint fk_detalleActividadesServicio_horarioServicio foreign key (idHorarioServicio) references horarioServicio (id);

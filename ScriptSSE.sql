@@ -1,4 +1,3 @@
--- 
 -- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### SCRIPT BASE DE DATOS SISTEMA DE CONTROL DE SERVICIO SOCIAL ESTUDIANTIL  ITCA-FEPADE #####
 -- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -155,6 +154,14 @@ create table detalleHorarioAtencion(
     idHorarioAtencion int
 );
 
+create table correo(
+    id int auto_increment primary key unique,
+    fecha date,
+    titulo varchar(25),
+    idCoordinador int,
+    idEstudiante int
+);
+
 -- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### LLAVES FORANEAS ######
 -- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -180,5 +187,5 @@ alter table horarioServicio add constraint fk_horarioServicio_hojaServicioSocial
 alter table actividadesServicio add constraint fk_actividadesServicio_hojaServicioSocial foreign key (idHojaServicioSocial) references hojaServicioSocial(id);
 alter table detalleHorarioServicio add constraint fk_detalleHorarioServicio_horarioServicio foreign key (idHorarioServicio) references horarioServicio (id);
 alter table detalleActividadesServicio add constraint fk_detalleActividadesServicio_horarioServicio foreign key (idActividadesServicio) references actividadesServicio (id);
-
--- 
+alter table correo add constraint fk_correo_coordinador foreign key (idCoordinador) references coordinador (id);
+alter table correo add constraint fk_correo_coordinador foreign key (idUsuario) references usuario (id);

@@ -188,4 +188,4 @@ alter table actividadesServicio add constraint fk_actividadesServicio_hojaServic
 alter table detalleHorarioServicio add constraint fk_detalleHorarioServicio_horarioServicio foreign key (idHorarioServicio) references horarioServicio (id);
 alter table detalleActividadesServicio add constraint fk_detalleActividadesServicio_horarioServicio foreign key (idActividadesServicio) references actividadesServicio (id);
 alter table correo add constraint fk_correo_coordinador foreign key (idCoordinador) references coordinador (id);
-alter table correo add constraint fk_correo_coordinador foreign key (idUsuario) references usuario (id);
+alter table correo add constraint fk_correo_estudiante foreign key (idEstudiante) references estudiante (id);

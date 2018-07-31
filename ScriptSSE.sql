@@ -80,7 +80,7 @@ create table detalleHorarioServicio(
     idHorarioServicio int
 );
 
-create table activadesServicio(
+create table actividadesServicio(
     id int auto_increment primary key unique,
     idHojaServicioSocial int
 );
@@ -162,7 +162,7 @@ alter table grupo add constraint fk_grupo_carrera foreign key (idCarrera) refere
 alter table carrera add constraint fk_carrera_escuela foreign key (idEscuela) references escuela(id);
 alter table estudiante add constraint fk_estudiante_usuario foreign key (idUsuario) references usuario(id);
 alter table estudiante add constraint fk_estudiante_grupo foreign key (idGrupo) references grupo(id);
-alter table coordinador add constraint fk_estudiante_usuario foreign key (idUsuario) references usuario(id);
+alter table coordinador add constraint fk_coordinador_usuario foreign key (idUsuario) references usuario(id);
 alter table horarioAtencion add constraint fk_horarioAtencion_coordinador foreign key (idCoordinador) references coordinador(id);
 alter table detalleHorarioAtencion add constraint fk_detalleHorarioAtencion_horarioAtencion foreign key (idHorarioAtencion) references horarioAtencion(id);
 alter table institucion add constraint fk_institucion_tipoInstitucion foreign key (idTipoInstitucion) references tipoInstitucion(id);
@@ -178,4 +178,4 @@ alter table hojaServicioSocial add constraint fk_hojaServicioSocial_coordinador 
 alter table horarioServicio add constraint fk_horarioServicio_hojaServicioSocial foreign key (idHojaServicioSocial) references hojaServicioSocial(id);
 alter table actividadesServicio add constraint fk_actividadesServicio_hojaServicioSocial foreign key (idHojaServicioSocial) references hojaServicioSocial(id);
 alter table detalleHorarioServicio add constraint fk_detalleHorarioServicio_horarioServicio foreign key (idHorarioServicio) references horarioServicio (id);
-alter table detalleActividadesServicio add constraint fk_detalleActividadesServicio_horarioServicio foreign key (idHorarioServicio) references horarioServicio (id);
+alter table detalleActividadesServicio add constraint fk_detalleActividadesServicio_horarioServicio foreign key (idActividadesServicio) references actividadesServicio (id);

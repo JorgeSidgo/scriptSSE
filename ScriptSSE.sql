@@ -189,3 +189,30 @@ alter table detalleHorarioServicio add constraint fk_detalleHorarioServicio_hora
 alter table detalleActividadesServicio add constraint fk_detalleActividadesServicio_horarioServicio foreign key (idActividadesServicio) references actividadesServicio (id);
 alter table correo add constraint fk_correo_coordinador foreign key (idCoordinador) references coordinador (id);
 alter table correo add constraint fk_correo_estudiante foreign key (idEstudiante) references estudiante (id);
+
+-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##### DATOS INICIALES ######
+-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+insert into escuela values (null, 'Escuela de Ingenieria en Computacion');
+insert into carrera values (null, 'Tecnico en Ingenieria de Sistemas', 1);
+insert into grupo values (null, 'SIS12-A', 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -194,25 +194,99 @@ alter table correo add constraint fk_correo_estudiante foreign key (idEstudiante
 ##### DATOS INICIALES ######
 -- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
 insert into escuela values (null, 'Escuela de Ingenieria en Computacion');
 insert into carrera values (null, 'Tecnico en Ingenieria de Sistemas', 1);
 insert into grupo values (null, 'SIS12-A', 1);
 
+-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##### PROCEDIMIENTOS ALMACENADOS ######
+-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Institucion --
+	-- Insert --
+delimiter $
+create procedure insInstitu(in id int, in nombreInstitucion varchar(50), in direccion text, in correo varchar(50), in telefono varchar(10), in idTipoInstitucion int)
+begin
+	insert into institucion values (id,nombreInstitucion,direccion,correo,telefono,idTipoInstitucion);
+end $
+
+	-- Update --
+delimiter $
+create procedure updInstitu(in id int, in nombreInstitucion varchar(50), in direc text, in correro varchar(50), in tel varchar(10), in idTipoInst int)
+begin
+	update institucion set nombreInstitucion = nombreInstitucion, direccion = direc, correo = correo, telefono = tel, idTipoinstitucion = idTipoInst
+	where id = id;
+end $
+
+	-- delete --
+delimiter $
+create procedure dltInstitu(in id int)
+begin 
+	delete from Institucion where id = id;
+end $
+
+	-- show --
+delimiter $
+create procedure showInstitu()
+begin 
+	select * from Institucion;
+end $
 
 
+/* Para llamar un procedimiento
+	call nombreProcedimiento(parametros)
+*/
 
+-- Hoja de Solicitud --
+	-- Insert --
+delimiter $
+create procedure insHojaServicio(in id int, in idEstudiante int, in idInstituicion int, in idCoordinador int, in fechaInicio date, in fechaFinalizacion date)
+begin 
+	insert into hojaserviciosocial values (id,idEstudiante,idInstitucion,idCoordinador,fechaInicio,fechaFinalizacion);
+end $
 
+	-- Update --
+delimiter $
+create procedure updHojaServicio(in id int, in idEs int, in idInst int, in idCo int, in fechaInicio date, in fechaFin date)
+begin
+	update hojaserviciosocial set idEstudiante = idEs, idInstitucion = idInst, idCoordinador = idCo, fechaInicio = fechaInicio, fechaFinalizacion = fechaFin
+    where id = id;
+end $
 
+	-- show --
+delimiter $
+create procedure showHojaServicio()
+begin 
+	select * from hojaserviciosocial;
+end $
 
+-- ------------------------------------------------------------------------------------------------------------------------------------------
+-- Solicitud --
+	-- Insert
+delimiter $
+create procedure insSolicitud(in id int, in idEstudiante int, in idCoordinador int, in idInstituicion int, in fecha date, in com text, in estado int)
+begin 
+	insert into solicitud values (id,idEstudiante,idCoordinador,idInstitucion,fecha,com,estado);
+end $
 
+	-- Update --
+delimiter $
+create procedure updSolicitud(in id int, in idEs int, in idCo int, in idInst int, in fecha date, in com text, in estado int)
+begin
+	update solicitud set idEstudiante = idEs, idCoordinador = idCo, idInstitucion = idInst, fecha = fecha, comentarios = com, estado = estado
+    where id = id;
+end $
 
+	-- delete --
+delimiter $
+create procedure dltSolicitud(in id int)
+begin 
+	delete from solicitud where id = id;
+end $
 
-
-
-
-
-
-
-
-
+	-- show --
+delimiter $
+create procedure showSolicitud()
+begin 
+	select * from solicitud;
+end $

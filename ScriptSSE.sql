@@ -44,7 +44,8 @@ create table grupo(
 create table usuario(
 	id int auto_increment primary key unique,
     nomUsuario varchar(25) not null,
-    pass varchar(128)
+    pass varchar(128),
+    estado int
 );
 
 create table materia(
@@ -137,7 +138,7 @@ create table coordinador(
 	id int auto_increment primary key unique,
     nombres varchar(50),
     apellidos varchar(50),
-    correo varchar(50),
+    correo varchar(125),
     idUsuario int not null
 );
 
@@ -190,19 +191,37 @@ alter table detalleActividadesServicio add constraint fk_detalleActividadesServi
 alter table correo add constraint fk_correo_coordinador foreign key (idCoordinador) references coordinador (id);
 alter table correo add constraint fk_correo_estudiante foreign key (idEstudiante) references estudiante (id);
 
--- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-##### DATOS INICIALES ######
--- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-insert into escuela values (null, 'Escuela de Ingenieria en Computacion');
-insert into carrera values (null, 'Tecnico en Ingenieria de Sistemas', 1);
-insert into grupo values (null, 'SIS12-A', 1);
 
 -- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### PROCEDIMIENTOS ALMACENADOS ######
 -- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
--- Institucion --
+### Usuario
+
+-- Registrar
+delimiter $$
+create procedure p_registrarUsuario(
+	in nom varchar(50),
+    in contra varchar(50)
+)
+begin
+	insert into usuario values(null, nom, sha1(contra), 1);
+end
+$$
+
+-- Login
+delimiter $$
+create procedure p_login(
+	in nom varchar(50),
+    in contra varchar(50)
+)
+begin
+	select * from usuario where nombre = nom and pass = sha1(contra) and estado = 1;
+end
+$$
+
+
+### Institucion
 	-- Insert --
 delimiter $
 create procedure insInstitu(in id int, in nombreInstitucion varchar(50), in direccion text, in correo varchar(50), in telefono varchar(10), in idTipoInstitucion int)
@@ -237,7 +256,7 @@ end $
 	call nombreProcedimiento(parametros)
 */
 
--- Hoja de Solicitud --
+### Hoja de Solicitud
 	-- Insert --
 delimiter $
 create procedure insHojaServicio(in id int, in idEstudiante int, in idInstituicion int, in idCoordinador int, in fechaInicio date, in fechaFinalizacion date)
@@ -261,7 +280,7 @@ begin
 end $
 
 -- ------------------------------------------------------------------------------------------------------------------------------------------
--- Solicitud --
+### Solicitud 
 	-- Insert
 delimiter $
 create procedure insSolicitud(in id int, in idEstudiante int, in idCoordinador int, in idInstituicion int, in fecha date, in com text, in estado int)
@@ -290,3 +309,31 @@ create procedure showSolicitud()
 begin 
 	select * from solicitud;
 end $
+
+
+-- Coordinador
+delimiter $$
+create procedure p_registrarCoordinador(
+	in nom varchar(50),
+    in ape varchar(50),
+    in corr varchar(124),
+    in nomUsuario varchar(50),
+    in contra varchar(50)
+)
+begin
+	declare idUsuario int;
+	call p_registrarUsuario(nomUsuario, contra);
+    set idUsuario = (select max(id) from usuario);
+    insert into coordinador values(null, nom, ape, corr, idUsuario);
+end
+$$
+
+-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+##### DATOS INICIALES ######
+-- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+insert into escuela values (null, 'Escuela de Ingenieria en Computacion');
+insert into carrera values (null, 'Tecnico en Ingenieria de Sistemas', 1);
+insert into grupo values (null, 'SIS12-A', 1);
+
+call p_registrarCoordinador();

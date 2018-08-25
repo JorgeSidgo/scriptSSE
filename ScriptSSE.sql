@@ -45,7 +45,13 @@ create table usuario(
 	id int auto_increment primary key unique,
     nomUsuario varchar(25) not null,
     pass varchar(128),
-    estado int
+    estado int,
+    idRol int
+);
+
+create table rol(
+	id int auto_increment primary key unique,
+    descRol varchar(50)
 );
 
 create table materia(
@@ -169,6 +175,7 @@ create table correo(
 
 alter table grupo add constraint fk_grupo_carrera foreign key (idCarrera) references carrera(id);
 alter table carrera add constraint fk_carrera_escuela foreign key (idEscuela) references escuela(id);
+alter table usuario add constraint fk_usuario_rol foreign key (idRol) references rol(id);
 alter table estudiante add constraint fk_estudiante_usuario foreign key (idUsuario) references usuario(id);
 alter table estudiante add constraint fk_estudiante_grupo foreign key (idGrupo) references grupo(id);
 alter table coordinador add constraint fk_coordinador_usuario foreign key (idUsuario) references usuario(id);
@@ -202,10 +209,11 @@ alter table correo add constraint fk_correo_estudiante foreign key (idEstudiante
 delimiter $$
 create procedure p_registrarUsuario(
 	in nom varchar(50),
-    in contra varchar(50)
+    in contra varchar(50),
+    in rol int
 )
 begin
-	insert into usuario values(null, nom, sha1(contra), 1);
+	insert into usuario values(null, nom, sha1(contra), 1, rol);
 end
 $$
 
@@ -216,7 +224,7 @@ create procedure p_login(
     in contra varchar(50)
 )
 begin
-	select * from usuario where nombre = nom and pass = sha1(contra) and estado = 1;
+	select * from usuario where nomUsuario = nom and pass = sha1(contra) and estado = 1;
 end
 $$
 
@@ -322,18 +330,29 @@ create procedure p_registrarCoordinador(
 )
 begin
 	declare idUsuario int;
-	call p_registrarUsuario(nomUsuario, contra);
+	call p_registrarUsuario(nomUsuario, contra, 4);
     set idUsuario = (select max(id) from usuario);
     insert into coordinador values(null, nom, ape, corr, idUsuario);
 end
 $$
-
+select * from usuario;
 -- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ##### DATOS INICIALES ######
 -- --------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+insert into rol values(null, 'Desarrollador');
+insert into rol values(null, 'Administrador');
+insert into rol values(null, 'Invitado');
+insert into rol values(null, 'Coordinador');
+insert into rol values(null, 'Estudiante');
 
 insert into escuela values (null, 'Escuela de Ingenieria en Computacion');
 insert into carrera values (null, 'Tecnico en Ingenieria de Sistemas', 1);
 insert into grupo values (null, 'SIS12-A', 1);
 
-call p_registrarCoordinador();
+call p_registrarCoordinador('Giovanni Ariel', 'Tzec Chavez', 'giovanni.tzec@gmail.com', 'GiovanniTzec', 'tugfa');
+
+
+
+
+
